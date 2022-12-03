@@ -10,6 +10,8 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
     private TabLayout bottomAppBar;
     private ViewPager2 viewPager2;
@@ -39,5 +41,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }).attach();
+
     }
 }

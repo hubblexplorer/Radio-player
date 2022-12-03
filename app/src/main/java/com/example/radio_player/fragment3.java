@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-//Esta classe trata da lógica do fragemento 3
+
 public class fragment3 extends Fragment implements View.OnClickListener {
 
 

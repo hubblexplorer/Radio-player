@@ -20,7 +20,7 @@ import java.util.GregorianCalendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
-//Esta classe trata do fragmento 2
+
 public class fragment2 extends Fragment {
 
 
