@@ -7,7 +7,7 @@
     android:background="#D6FBF8"
 
 
-    tools:context=".Radio">
+    tools:context=".Radio_player">
 
     <ImageView
         android:id="@+id/imageView2"

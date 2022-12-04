@@ -27,6 +27,9 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity android:name=".Radio_player">
+
+        </activity>
     </application>
 
 </manifest>
