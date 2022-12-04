@@ -7,38 +7,43 @@
     tools:context=".MainActivity">
 
     <com.google.android.material.tabs.TabLayout
+        android:id="@+id/bottomAPPbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:id="@+id/bottomAPPbar"
-        >
+        android:background="@color/teal_200"
+        app:tabIconTint="#6C5B7B"
+        app:tabIndicatorColor="#6C5B7B"
+        app:tabTextColor="#6C5B7B">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/musica"
-            android:text="Musica"
-            android:icon="@drawable/icon_tab1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <com.google.android.material.tabs.TabItem android:id="@+id/playlist"
-            android:text="Playlists"
-            android:icon="@drawable/icon_tab2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
+            android:icon="@drawable/icon_tab1"
+            android:text="Musica" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/playlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:icon="@drawable/icon_tab2"
+            android:text="Playlists" />
+
         <com.google.android.material.tabs.TabItem
             android:id="@+id/radio"
-            android:text="Rádio"
-            android:icon="@drawable/icon_tab3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
+            android:icon="@drawable/icon_tab3"
+            android:text="Rádio" />
 
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="657dp" />
+        android:layout_height="657dp"
+        android:background="#D6FBF8" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
