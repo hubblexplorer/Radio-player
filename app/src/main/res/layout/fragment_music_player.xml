@@ -4,131 +4,168 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D8D2D2"
+    android:background="#D6FBF8"
     tools:context=".music_player">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/img_music"
         android:layout_width="158dp"
         android:layout_height="142dp"
-        android:layout_marginTop="172dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.251"
         app:srcCompat="@drawable/istockphoto_1196420424_612x612" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_musicname"
         android:layout_width="150dp"
         android:layout_height="43dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="52dp"
         android:fontFamily="@font/fruktur"
         android:text="Nome musica"
         android:textAlignment="center"
         android:textColor="#6C5B7B"
         android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_music"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/btn_addfav"
+        android:layout_width="82dp"
+        android:layout_height="72dp"
+        android:backgroundTint="#D6FBF8"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="36dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@drawable/favorite" />
-
-    <ImageButton
-        android:id="@+id/imageButton3"
-        android:layout_width="48dp"
-        android:layout_height="37dp"
-        android:layout_marginTop="464dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.531"
-        app:layout_constraintStart_toEndOf="@+id/imageButton2"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/shuffle" />
+        app:layout_constraintVertical_bias="0.637"
+        app:srcCompat="@drawable/icons8_refresh_love_64" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/btn_shuffle"
         android:layout_width="45dp"
         android:layout_height="37dp"
-        android:layout_marginTop="464dp"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
-        app:layout_constraintHorizontal_bias="0.408"
+        android:backgroundTint="#D6FBF8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.45"
+        app:layout_constraintStart_toEndOf="@+id/btn_addfav"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.605"
+        app:srcCompat="@drawable/icons8_shuffle_48" />
+
+    <ImageButton
+        android:id="@+id/btn_repeat"
+        android:layout_width="45dp"
+        android:layout_height="37dp"
+        android:backgroundTint="#D6FBF8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_addfav"
+        app:layout_constraintHorizontal_bias="0.605"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/repeat" />
+        app:layout_constraintVertical_bias="0.605"
+        app:srcCompat="@drawable/icons8_repeat_48" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="576dp"
         android:text="Timer"
+        android:textColor="#6C5B7B"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.042"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.876" />
 
     <ImageButton
-        android:id="@+id/imageButton4"
+        android:id="@+id/btn_back"
         android:layout_width="53dp"
         android:layout_height="35dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="124dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:srcCompat="@drawable/previous" />
-
-    <ImageButton
-        android:id="@+id/imageButton5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="56dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageButton4"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton2"
-        app:layout_constraintVertical_bias="0.118"
-        app:srcCompat="@drawable/play" />
-
-    <ImageButton
-        android:id="@+id/imageButton6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginBottom="116dp"
+        android:layout_marginStart="24dp"
+        android:backgroundTint="#D6FBF8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.027"
-        app:layout_constraintStart_toEndOf="@+id/imageButton5"
-        app:srcCompat="@drawable/next" />
+        app:layout_constraintHorizontal_bias="0.065"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.767"
+        app:srcCompat="@drawable/icons8_rewind_48" />
+
+    <ImageButton
+        android:id="@+id/btn_play"
+        android:layout_width="53dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="20dp"
+        android:backgroundTint="#D6FBF8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.357"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.787"
+        app:srcCompat="@drawable/icons8_play_48" />
+
+    <ImageButton
+        android:id="@+id/btn_front"
+        android:layout_width="53dp"
+        android:layout_height="35dp"
+        android:backgroundTint="#D6FBF8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.888"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.767"
+        app:srcCompat="@drawable/icons8_fast_forward_48" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tv_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="668dp"
         android:text="Tamanho da musica"
+        android:textColor="#6C5B7B"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/imageButton6"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.943"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.877" />
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/pb_music"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="421dp"
         android:layout_height="17dp"
         android:backgroundTint="#355C7D"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton5"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_play"
+        app:layout_constraintVertical_bias="0.566" />
+
+    <ImageButton
+        android:id="@+id/btn_pause"
+        android:layout_width="54dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="#D6FBF8"
+        android:src="@drawable/icons8_pause_48"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.593"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.787" />
 </androidx.constraintlayout.widget.ConstraintLayout>

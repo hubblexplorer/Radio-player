@@ -29,7 +29,7 @@ public class fragment2 extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.playlist_layout, container, false);
+        return inflater.inflate(R.layout.fragment_playlist, container, false);
     }
 
     @Override
