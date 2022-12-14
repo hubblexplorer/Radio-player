@@ -11,7 +11,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.media.session.MediaSessionCompat;
 
-import com.example.radio_player.Player.music_player;
+
+import com.example.radio_player.Player.player;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-
+/*
 
         bottomAppBar = findViewById(R.id.bottomAPPbar);
         viewPager2 = findViewById(R.id.viewpager);
@@ -51,10 +52,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }).attach();
         Uteis.getMusicList(this,getContentResolver());
+*/
 
-     /*
-        Intent intent = new Intent(MainActivity.this, music_player.class);
-        startActivity(intent);*/
+        Intent intent = new Intent(MainActivity.this, player.class);
+        startActivity(intent);
 
     }
 }
