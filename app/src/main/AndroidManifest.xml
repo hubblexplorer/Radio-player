@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+
 
     <application
         android:allowBackup="true"
@@ -27,9 +30,31 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".Radio_player">
+        <activity
+            android:name=".Player.music_player"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
         </activity>
+        <service android:name=".Player.MusicService" android:enabled="true"/>
+        <receiver android:name=".Player.NotificationRecevier" android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="NEXT"></action>
+                <action android:name="PREVIOUS"></action>
+                <action android:name="PLAY"></action>
+            </intent-filter>
+        </receiver>
+
+
+
     </application>
 
 </manifest>

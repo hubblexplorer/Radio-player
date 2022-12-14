@@ -37,6 +37,7 @@ public class fragment3 extends Fragment implements View.OnClickListener {
         View view = getView();
 
 
+
     }
 
     @Override
