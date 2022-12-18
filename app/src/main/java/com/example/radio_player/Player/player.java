@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -31,7 +32,7 @@ import wseemann.media.FFmpegMediaMetadataRetriever;
 
 
 public class player extends AppCompatActivity implements ActionPlaying, ServiceConnection, View.OnClickListener, MediaPlayer.OnCompletionListener {
-    ImageView next,prev,play;
+    ImageView next,prev,play,repeat;
     TextView title;
     int position_of_list = 0;
     String [][] songs;
@@ -53,6 +54,7 @@ public class player extends AppCompatActivity implements ActionPlaying, ServiceC
         next = findViewById(R.id.btn_front);
         prev = findViewById(R.id.btn_back);
         play = findViewById(R.id.btn_play);
+        repeat = findViewById(R.id.btn_repeat);
         title = findViewById(R.id.tv_musicname);
         Intent intent = new Intent(this, MusicService.class);
         bindService(intent, this, BIND_AUTO_CREATE);
@@ -60,6 +62,7 @@ public class player extends AppCompatActivity implements ActionPlaying, ServiceC
         next.setOnClickListener(this);
         prev.setOnClickListener(this);
         play.setOnClickListener(this);
+        repeat.setOnClickListener(this);
 
 
         title.setText(songs[0][2]);
@@ -81,13 +84,13 @@ public class player extends AppCompatActivity implements ActionPlaying, ServiceC
 
     @Override
     public void nextClicked() {
+        position_of_list++;
         if(position_of_list > songs.length-1){
             position_of_list=0;
         }
-        else position_of_list++;
         title.setText(songs[position_of_list][2]);
-        play.setImageResource(R.drawable.pause);
-        showNotification(R.drawable.pause);
+        play.setImageResource(R.drawable.icons8_pause_48);
+        showNotification(R.drawable.icons8_pause_48);
         isPlaying = true;
         time = 0;
         if (isSet){
@@ -111,15 +114,14 @@ public class player extends AppCompatActivity implements ActionPlaying, ServiceC
 
     @Override
     public void prevClicked() {
-
-        if(position_of_list == 0 ){
+        position_of_list--;
+        if(position_of_list < 0 ){
             position_of_list=songs.length-1;
         }
-        position_of_list--;
         Uteis.MSG_Debug("Position: "+ position_of_list);
         title.setText(songs[position_of_list][2]);
-        play.setImageResource(R.drawable.pause);
-        showNotification(R.drawable.pause);
+        play.setImageResource(R.drawable.icons8_pause_48);
+        showNotification(R.drawable.icons8_pause_48);
 
         isPlaying = true;
         time = 0;
@@ -149,8 +151,8 @@ public class player extends AppCompatActivity implements ActionPlaying, ServiceC
     public void playClicked() {
         if(!isPlaying){
             isPlaying=true;
-            play.setImageResource(R.drawable.pause);
-            showNotification(R.drawable.pause);
+            play.setImageResource(R.drawable.icons8_pause_48);
+            showNotification(R.drawable.icons8_pause_48);
             try {
                 if (!isSet) {
                     Uteis.MSG_Debug(songs[position_of_list][3]);
@@ -175,8 +177,8 @@ public class player extends AppCompatActivity implements ActionPlaying, ServiceC
             mediaPlayer.stop();
 
             isPlaying=false;
-            play.setImageResource(R.drawable.play);
-            showNotification(R.drawable.play);
+            play.setImageResource(R.drawable.icons8_play_48);
+            showNotification(R.drawable.icons8_play_48);
         }
     }
 
@@ -184,7 +186,6 @@ public class player extends AppCompatActivity implements ActionPlaying, ServiceC
     public void onClick(View view) {
         Uteis.MSG_Debug("Playing " + songs[position_of_list][2]);
         switch (view.getId()){
-
             case R.id.btn_front:
                 nextClicked();
                 break;
@@ -193,7 +194,20 @@ public class player extends AppCompatActivity implements ActionPlaying, ServiceC
                 break;
             case R.id.btn_play:
                 playClicked();
-
+                break;
+            case R.id.btn_repeat:
+                    if(isRepeating)
+                    {
+                        mediaPlayer.setLooping(false);
+                        isRepeating = false;
+                        repeat.setImageResource(R.drawable.icons8_repeat_48);
+                    }
+                    else
+                    {
+                        mediaPlayer.setLooping(true);
+                        isRepeating = true;
+                        repeat.setImageResource(R.drawable.icons8_repeat_48_select);
+                    }
                 break;
 
         }
@@ -241,19 +255,19 @@ public class player extends AppCompatActivity implements ActionPlaying, ServiceC
 
     public void showNotification(int playPauseBtn){
         Intent intent = new Intent(this, player.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this,0,intent,0);
+        PendingIntent contentIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_MUTABLE);
 
         Intent prevIntent= new Intent(this, NotificationRecevier.class)
                 .setAction(ACTION_PREVIOUS);
-        PendingIntent prevPendingIntent = PendingIntent.getBroadcast(this,0,prevIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent prevPendingIntent = PendingIntent.getBroadcast(this,0,prevIntent,PendingIntent.FLAG_MUTABLE);
 
         Intent playIntent= new Intent(this, NotificationRecevier.class)
                 .setAction(ACTION_PLAY);
-        PendingIntent playPendingIntent = PendingIntent.getBroadcast(this,0,playIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent playPendingIntent = PendingIntent.getBroadcast(this,0,playIntent,PendingIntent.FLAG_MUTABLE);
 
         Intent nextIntent= new Intent(this, NotificationRecevier.class)
                 .setAction(ACTION_NEXT);
-        PendingIntent nextPendingIntent = PendingIntent.getBroadcast(this,0,nextIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent nextPendingIntent = PendingIntent.getBroadcast(this,0,nextIntent,PendingIntent.FLAG_MUTABLE);
 
 
         Bitmap picture = getImage(songs[position_of_list]);
@@ -265,9 +279,9 @@ public class player extends AppCompatActivity implements ActionPlaying, ServiceC
                 .setLargeIcon(picture)
                 .setContentTitle(songs[position_of_list][2])
                 .setContentText(songs[position_of_list][1])
-                .addAction(R.drawable.previous, "Previous", prevPendingIntent)
+                .addAction(R.drawable.icons8_rewind_48, "Previous", prevPendingIntent)
                 .addAction(playPauseBtn, "Play", playPendingIntent)
-                .addAction(R.drawable.next, "Next", nextPendingIntent)
+                .addAction(R.drawable.icons8_fast_forward_48, "Next", nextPendingIntent)
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                         .setMediaSession(mediaSession.getSessionToken()))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
