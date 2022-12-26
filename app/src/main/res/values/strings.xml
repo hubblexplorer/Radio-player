@@ -2,7 +2,9 @@
     <string name="app_name">Radio Player </string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="str_tab1">Radio</string>
-    <string name="str_tab2">Radio</string>
-    <string name="str_tab3">Radio</string>
+    <string name="str_tab1">Música</string>
+    <string name="str_tab2">Playlist</string>
+    <string name="str_tab3">Rádio</string>
+    <string name="Radio_Icon">Radio_Icon</string>
+    <string name="Radio_name">Radio_Name</string>
 </resources>

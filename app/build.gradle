@@ -42,4 +42,5 @@ dependencies {
     implementation 'com.github.wseemann:FFmpegMediaMetadataRetriever-native:1.0.19'
     implementation('androidx.legacy:legacy-support-v4:1.0.0')
 
+
 }

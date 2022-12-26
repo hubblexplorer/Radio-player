@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-/*
+
 
         bottomAppBar = findViewById(R.id.bottomAPPbar);
         viewPager2 = findViewById(R.id.viewpager);
@@ -52,10 +52,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }).attach();
         Uteis.getMusicList(this,getContentResolver());
-*/
 
+/*
         Intent intent = new Intent(MainActivity.this, player.class);
-        startActivity(intent);
+        startActivity(intent);*/
 
     }
 }
