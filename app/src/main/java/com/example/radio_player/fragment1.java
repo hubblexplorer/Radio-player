@@ -2,26 +2,27 @@ package com.example.radio_player;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.NumberPicker;
-import android.widget.TextView;
 
+import com.example.radio_player.Player.ActionPlaying;
 import com.example.radio_player.Player.AudioData;
+import com.example.radio_player.Player.MusicService;
+import com.example.radio_player.Player.OnItemClickListener;
+import com.example.radio_player.Player.music_player;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -39,6 +40,7 @@ public class fragment1 extends Fragment  implements View.OnClickListener {
         return inflater.inflate(R.layout.fragment_playlist, container, false);
     }
     RecyclerView musiclist;
+    Boolean isRunning = false;
     @Override
     //Este framento contem um temporizador
     public void onStart(){
@@ -62,15 +64,38 @@ public class fragment1 extends Fragment  implements View.OnClickListener {
             position.add(i);
             autores.add(audioList.get(i).getAutor());
 
-
-
-
         }
 
         Adapter_fragment1 adapter_fragment1 = new Adapter_fragment1(titulos,imgs,position,autores);
+        adapter_fragment1.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Uteis.MSG_Debug(String.valueOf(position));
+
+
+
+                if (!isRunning){
+                    isRunning = true;
+                    Intent intent = new Intent(view.getContext(), music_player.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    intent.putExtra("Type","Music");
+                    intent.putExtra("Position",position);
+                    startActivity(intent);
+                }
+                else {
+                            Intent intent = new Intent("Change_position");
+                            intent.putExtra("Position", position);
+                            LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
+
+                    }
+                }
+
+            }
+        );
         musiclist = view.findViewById(R.id.music_list);
         musiclist.setAdapter(adapter_fragment1);
         musiclist.setLayoutManager(new LinearLayoutManager(getContext()));
+
     }
 
     @Override

@@ -18,7 +18,9 @@
         android:theme="@style/Theme.Radio_player"
         tools:targetApi="31">
         <activity
-            android:name=".Player.player"
+            android:name=".Player.music_player"
+            android:launchMode="singleTop"
+
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

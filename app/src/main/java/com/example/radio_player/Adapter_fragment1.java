@@ -10,24 +10,43 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.radio_player.Player.OnItemClickListener;
+
 import java.util.ArrayList;
 
-public class Adapter_fragment1 extends RecyclerView.Adapter<Adapter_fragment1.ViewHolder> {
+public class Adapter_fragment1 extends RecyclerView.Adapter<Adapter_fragment1.ViewHolder> implements OnItemClickListener {
 
     private ArrayList<String> titulos;
     private ArrayList<byte[]> imgs;
     private ArrayList<String> autores;
     private ArrayList<Integer> posicao;
 
+    private OnItemClickListener listener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        if (listener != null) {
+            listener.onItemClick(position);
+        }
+    }
+
+
+
     /**
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder)
      */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView title;
         private final TextView author;
         private final ImageView imageView;
         private int index;
+
 
         public ViewHolder(View view) {
             super(view);
@@ -36,7 +55,15 @@ public class Adapter_fragment1 extends RecyclerView.Adapter<Adapter_fragment1.Vi
             title = (TextView) view.findViewById(R.id.music_item_title);
             author = view.findViewById(R.id.music_item_band);
             imageView = view.findViewById(R.id.music_item_image);
-
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(position);
+                    }
+                }
+            });
 
         }
 
@@ -55,6 +82,8 @@ public class Adapter_fragment1 extends RecyclerView.Adapter<Adapter_fragment1.Vi
         public int getindex(){
             return index;
         }
+
+
     }
 
 
@@ -98,4 +127,7 @@ public class Adapter_fragment1 extends RecyclerView.Adapter<Adapter_fragment1.Vi
     public int getItemCount() {
         return titulos.size();
     }
+
+
+
 }
