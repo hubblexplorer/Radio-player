@@ -8,18 +8,20 @@
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager"
-        android:layout_width="411dp"
-        android:layout_height="682dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.9"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/bottomAPPbar"
-        android:layout_width="411dp"
-        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,21 +32,21 @@
         <com.google.android.material.tabs.TabItem
             android:id="@+id/musica"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="100dp"
             android:icon="@drawable/icon_tab1"
             android:text="Musica" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/playlist"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="100dp"
             android:icon="@drawable/icon_tab2"
             android:text="Playlists" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/radio"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="100dp"
             android:icon="@drawable/icon_tab3"
             android:text="Rádio" />
 

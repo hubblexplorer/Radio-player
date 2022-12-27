@@ -38,7 +38,7 @@ public class music_player  extends AppCompatActivity implements ActionPlaying, S
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_music_player);
+        setContentView(R.layout.activity_player);
         mediaPlayer = new MediaPlayer();
         songs = Uteis.getMusicList(this, getContentResolver());
         next=findViewById(R.id.btn_front);

@@ -12,41 +12,57 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
+public class Adapter_fragment1 extends RecyclerView.Adapter<Adapter_fragment1.ViewHolder> {
 
-    private ArrayList<String> nomes;
+    private ArrayList<String> titulos;
     private ArrayList<byte[]> imgs;
+    private ArrayList<String> autores;
+    private ArrayList<Integer> posicao;
 
     /**
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder)
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
+        private final TextView title;
+        private final TextView author;
         private final ImageView imageView;
+        private int index;
 
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
 
-            textView = (TextView) view.findViewById(R.id.radio_name);
-            imageView = view.findViewById(R.id.radio_img);
+            title = (TextView) view.findViewById(R.id.music_item_title);
+            author = view.findViewById(R.id.music_item_band);
+            imageView = view.findViewById(R.id.music_item_image);
 
 
         }
 
-        public TextView getTextView() {
-            return textView;
+        public TextView gettitle() {
+            return title;
+        }
+        public TextView getauthor() {
+            return author;
         }
         public ImageView getImageView() {
             return imageView;
         }
+        public void setindex(int i){
+            this.index = i;
+        }
+        public int getindex(){
+            return index;
+        }
     }
 
 
-    public CustomAdapter(ArrayList<String> s, ArrayList<byte[]> i) {
-        this.nomes = s;
-        this.imgs = i;
+    public Adapter_fragment1(ArrayList<String> titulos, ArrayList<byte[]> img, ArrayList<Integer> position,ArrayList<String> autores ) {
+        this.titulos = titulos;
+        this.imgs = img;
+        this.posicao = position;
+        this.autores = autores;
     }
 
     // Create new views (invoked by the layout manager)
@@ -54,7 +70,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.radio_item, viewGroup, false);
+                .inflate(R.layout.music_item, viewGroup, false);
 
         return new ViewHolder(view);
     }
@@ -65,12 +81,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.getTextView().setText(nomes.get(position));
+
+        viewHolder.gettitle().setText(titulos.get(position));
+        viewHolder.getauthor().setText(autores.get(position));
         if (imgs.get(position) != null) {
             viewHolder.getImageView().setImageBitmap(BitmapFactory.decodeByteArray(imgs.get(position), 0, imgs.get(position).length));
         }
         else{
-            viewHolder.getImageView().setImageBitmap(Bitmap.createBitmap(512, 512, Bitmap.Config.ARGB_8888));
+            viewHolder.getImageView().setImageResource(R.drawable.icons8_musical_80);
         }
 
     }
@@ -78,6 +96,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return nomes.size();
+        return titulos.size();
     }
 }

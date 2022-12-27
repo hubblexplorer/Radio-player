@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -47,25 +46,11 @@ public class fragment3 extends Fragment implements View.OnClickListener {
         nome_r = new ArrayList<>();
         img_r = new ArrayList<>();
         storedata();
-        ArrayList<String> nome_r_1 =  new ArrayList<>();
-        ArrayList<String> nome_r_2 =new ArrayList<>();
-        ArrayList<byte[]> img_r_1 = new ArrayList<>();
-        ArrayList<byte[]> img_r_2 = new ArrayList<>();
 
-        for(int i = 0; i < nome_r.size(); i++){
-            if (i%2 == 0){
-                nome_r_1.add(nome_r.get(i));
-                img_r_1.add(img_r.get(i));
-            }
-            else{
-                nome_r_2.add(nome_r.get(i));
-                img_r_2.add(img_r.get(i));
-            }
-        }
 
-        CustomAdapter customAdapter_1 = new CustomAdapter(nome_r_1,img_r_1);
+        Adapter_fragment3 adapter_fragment3_1 = new Adapter_fragment3(nome_r,img_r);
         gridView1 = view.findViewById(R.id.gridView1);
-        gridView1.setAdapter(customAdapter_1);
+        gridView1.setAdapter(adapter_fragment3_1);
         gridView1.setLayoutManager(new GridLayoutManager(getContext(),2));
 
 
