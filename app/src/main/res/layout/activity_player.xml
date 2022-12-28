@@ -36,26 +36,12 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
-        android:id="@+id/btn_shuffle"
-        android:layout_width="45dp"
-        android:layout_height="37dp"
-        android:backgroundTint="#D6FBF8"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.587"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.605"
-        app:srcCompat="@drawable/icons8_shuffle_48" />
-
-    <ImageButton
         android:id="@+id/btn_repeat"
         android:layout_width="45dp"
         android:layout_height="37dp"
         android:backgroundTint="#D6FBF8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.407"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.605"

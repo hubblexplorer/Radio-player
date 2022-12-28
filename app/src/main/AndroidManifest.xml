@@ -11,7 +11,6 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:name=".Player.ApplicationClass"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -19,7 +18,7 @@
         tools:targetApi="31">
         <activity
             android:name=".music_player"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
 
             android:exported="false">
             <meta-data
@@ -28,6 +27,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            android:launchMode="singleTask"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,16 +44,9 @@
             android:name=".MusicService"
             android:enabled="true" />
 
-        <receiver
-            android:name=".Player.NotificationRecevier"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="NEXT" />
-                <action android:name="PREVIOUS" />
-                <action android:name="PLAY" />
-            </intent-filter>
-        </receiver>
+
+
+
     </application>
 
 </manifest>

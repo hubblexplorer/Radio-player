@@ -6,35 +6,22 @@ import static com.example.radio_player.MainActivity.mediaPlayer;
 import static com.example.radio_player.MainActivity.notificationManager;
 import static com.example.radio_player.MainActivity.position;
 import static com.example.radio_player.MainActivity.songs;
-import static com.example.radio_player.MainActivity.time;
 import static com.example.radio_player.MainActivity.type;
-import static com.example.radio_player.fragment3.radio;
+import static com.example.radio_player.fragment2.radio;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.MediaPlayer;
 import android.os.Binder;
-import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.media.session.MediaSessionCompat;
 
 import androidx.core.app.NotificationCompat;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 public class MusicService extends Service {
 
@@ -93,7 +80,6 @@ public class MusicService extends Service {
         BroadcastReceiver mediaFinishedReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Uteis.MSG_Debug("Aquiiiiiiiiiiiiiiiiiiiiii");
                 if (!MainActivity.mediaPlayer.isLooping()) {
                     skipMusic();
                 }
@@ -231,7 +217,7 @@ public class MusicService extends Service {
     private void showNotification() {
         if (type == "Music") {
             Bitmap image = getImage(MainActivity.songs.get(position).getImage());
-            Intent contentIntent = new Intent(MainActivity.context, MainActivity.class);
+            Intent contentIntent = new Intent(MainActivity.context, music_player.class);
             PendingIntent contentPendingIntent = PendingIntent.getActivity(MainActivity.context, 0, contentIntent, PendingIntent.FLAG_MUTABLE);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.context, CHANNEL_ID)
                     .setContentTitle(songs.get(position).getDisplayname())
@@ -286,6 +272,9 @@ public class MusicService extends Service {
             notificationManager.notify(notificationId, builder.build());
 
         }
+        }
+        public static void repeat(){
+            mediaPlayer.setLooping(!mediaPlayer.isLooping());
         }
 
 

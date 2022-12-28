@@ -149,7 +149,6 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
     }
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-        Uteis.MSG_Debug("ALI");
         Intent broadcastIntent = new Intent(MEDIA_FINISHED_BROADCAST);
         sendBroadcast(broadcastIntent);
     }

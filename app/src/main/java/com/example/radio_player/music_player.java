@@ -6,14 +6,13 @@ import static com.example.radio_player.MainActivity.position;
 import static com.example.radio_player.MainActivity.serviceConnection;
 import static com.example.radio_player.MainActivity.songs;
 import static com.example.radio_player.MainActivity.type;
-import static com.example.radio_player.fragment3.radio;
+import static com.example.radio_player.fragment2.radio;
 
 import android.content.BroadcastReceiver;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
@@ -21,19 +20,10 @@ import android.os.Bundle;
 
 import android.os.Handler;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import com.example.radio_player.Player.ActionPlaying;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-
 
 
 public class music_player  extends AppCompatActivity implements ActionPlaying, View.OnClickListener{
@@ -41,6 +31,7 @@ public class music_player  extends AppCompatActivity implements ActionPlaying, V
     private TextView title, timetoend,music_size;
     Handler  handler;
     Runnable updateTimeRunnable;
+    ImageButton btn_repeat;
 
 
     @Override
@@ -54,14 +45,18 @@ public class music_player  extends AppCompatActivity implements ActionPlaying, V
         timetoend = findViewById(R.id.tv_time);
         img_music = findViewById(R.id.img_music);
         music_size = findViewById(R.id.tv_size);
+        btn_repeat = findViewById(R.id.btn_repeat);
 
         if ( type.equals("Music")) {
             next.setVisibility(View.VISIBLE);
             prev.setVisibility(View.VISIBLE);
             timetoend.setVisibility(View.VISIBLE);
+            music_size.setVisibility(View.VISIBLE);
+            btn_repeat.setVisibility(View.VISIBLE);
+            btn_repeat.setOnClickListener(this);
             img_music.setImageBitmap(getImage(songs.get(position).getImage()));
             if(mediaPlayer.isPlaying()){
-                play.setImageResource(R.drawable.pause);
+                play.setImageResource(R.drawable.icons8_pause_48);
                 newhandler();
 
             }
@@ -100,9 +95,11 @@ public class music_player  extends AppCompatActivity implements ActionPlaying, V
             next.setVisibility(View.INVISIBLE);
             prev.setVisibility(View.INVISIBLE);
             timetoend.setVisibility(View.INVISIBLE);
+            music_size.setVisibility(View.INVISIBLE);
+            btn_repeat.setVisibility(View.INVISIBLE);
             img_music.setImageBitmap(getImage(radio.get(position).getImage()));
             if(mediaPlayer.isPlaying()){
-                play.setImageResource(R.drawable.pause);
+                play.setImageResource(R.drawable.icons8_pause_48);
             }
             play.setOnClickListener(this);
             title.setText(radio.get(position).getDisplayname());
@@ -148,11 +145,9 @@ public class music_player  extends AppCompatActivity implements ActionPlaying, V
 
     @Override
     public void nextClicked() {
-
-
         serviceConnection.skipMusic();
         title.setText(songs.get(position).getDisplayname());
-        play.setImageResource(R.drawable.pause);
+        play.setImageResource(R.drawable.icons8_pause_48);
         img_music.setImageBitmap(getImage(songs.get(position).getImage()));
         int duration = songs.get(position).getDuration();
         int minutes = duration / 1000 / 60;
@@ -160,15 +155,13 @@ public class music_player  extends AppCompatActivity implements ActionPlaying, V
         String time = String.format("%d:%02d", minutes, seconds);
         music_size.setText(time);
 
-
-
     }
 
     @Override
     public void prevClicked() {
         serviceConnection.previousMusic();
         title.setText(songs.get(position).getDisplayname());
-        play.setImageResource(R.drawable.pause);
+        play.setImageResource(R.drawable.icons8_pause_48);
         img_music.setImageBitmap(getImage(songs.get(position).getImage()));
         int duration = songs.get(position).getDuration();
         int minutes = duration / 1000 / 60;
@@ -185,10 +178,10 @@ public class music_player  extends AppCompatActivity implements ActionPlaying, V
             serviceConnection.setPosition_of_list(position);
             if (!mediaPlayer.isPlaying()) {
                 serviceConnection.startMusic();
-                play.setImageResource(R.drawable.pause);
+                play.setImageResource(R.drawable.icons8_pause_48);
             } else {
                 serviceConnection.pauseMusic();
-                play.setImageResource(R.drawable.play);
+                play.setImageResource(R.drawable.icons8_play_48);
 
             }
             img_music.setImageBitmap(getImage(songs.get(position).getImage()));
@@ -197,48 +190,25 @@ public class music_player  extends AppCompatActivity implements ActionPlaying, V
             serviceConnection.setPosition_of_list(position);
             if (!mediaPlayer.isPlaying()) {
                 serviceConnection.startMusic();
-                play.setImageResource(R.drawable.pause);
+                play.setImageResource(R.drawable.icons8_pause_48);
             } else {
                 serviceConnection.pauseMusic();
-                play.setImageResource(R.drawable.play);
+                play.setImageResource(R.drawable.icons8_play_48);
 
             }
             img_music.setImageBitmap(getImage(radio.get(position).getImage()));
         }
 
     }
-
-
-
-    public  void setPosition(int position) {
-        if (type == "Music") {
-            MainActivity.position = position;
-            Uteis.MSG_Debug("Position: " + position);
-            title.setText(songs.get(position).getDisplayname());
-            play.setImageResource(R.drawable.pause);
-            newhandler();
-            img_music.setImageBitmap(getImage(songs.get(position).getImage()));
-            int duration = songs.get(position).getDuration();
-            int minutes = duration / 1000 / 60;
-            int seconds = (duration / 1000) % 60;
-            String time = String.format("%d:%02d", minutes, seconds);
-            music_size.setText(time);
+    public void repeat(){
+        MusicService.repeat();
+        if (mediaPlayer.isLooping()){
+            btn_repeat.setImageResource(R.drawable.icons8_repeat_48_select);
         }
         else{
-            MainActivity.position = position;
-            Uteis.MSG_Debug("Position: " + position);
-            title.setText(radio.get(position).getDisplayname());
-            play.setImageResource(R.drawable.pause);
-            img_music.setImageBitmap(getImage(radio.get(position).getImage()));
-            int duration = songs.get(position).getDuration();
-            int minutes = duration / 1000 / 60;
-            int seconds = (duration / 1000) % 60;
-            String time = String.format("%d:%02d", minutes, seconds);
-            music_size.setText(time);
+            btn_repeat.setImageResource(R.drawable.icons8_repeat_48);
         }
-
-        }
-
+    }
 
     @Override
     public void onClick(View view) {
@@ -253,7 +223,9 @@ public class music_player  extends AppCompatActivity implements ActionPlaying, V
                 break;
             case R.id.btn_play:
                 playClicked();
-
+                break;
+            case R.id.btn_repeat:
+                repeat();
                 break;
 
         }
@@ -282,10 +254,5 @@ public class music_player  extends AppCompatActivity implements ActionPlaying, V
 
 
     }
-
-
-
-
-
 
 }

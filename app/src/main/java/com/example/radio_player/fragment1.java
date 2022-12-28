@@ -16,9 +16,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.SearchView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -44,8 +48,7 @@ public class fragment1 extends Fragment  implements View.OnClickListener {
     public void onStart(){
         super.onStart();
         View view = getView();
-        FloatingActionButton f = view.findViewById(R.id.fab_add);
-        f.setVisibility(View.INVISIBLE);
+
 
         ArrayList<AudioData> audioList = MainActivity.songs;
         ArrayList<String> titulos = new ArrayList<>();
@@ -85,6 +88,7 @@ public class fragment1 extends Fragment  implements View.OnClickListener {
 
             }}
         );
+
         musiclist = view.findViewById(R.id.music_list);
         musiclist.setAdapter(adapter_fragment1);
         musiclist.setLayoutManager(new LinearLayoutManager(getContext()));

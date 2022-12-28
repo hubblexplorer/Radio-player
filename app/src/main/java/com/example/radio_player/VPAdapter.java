@@ -4,7 +4,6 @@ package com.example.radio_player;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 //Esta classe trata de manipular os fragmentos contituintes do programa
@@ -24,14 +23,12 @@ public class VPAdapter extends FragmentStateAdapter {
                return new fragment1();
            case 1:
                return new fragment2();
-           case 2:
-               return new fragment3();
        }
        return null;
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 2;
     }
 }
