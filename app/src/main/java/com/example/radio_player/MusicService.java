@@ -283,7 +283,7 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         if (type == "Music") {
             Bitmap image = getImage(MainActivity.songs.get(position).getImage());
             Intent contentIntent = new Intent(MainActivity.context, music_player.class);
-            PendingIntent contentPendingIntent = PendingIntent.getActivity(MainActivity.context, 0, contentIntent, 0);
+            PendingIntent contentPendingIntent = PendingIntent.getActivity(MainActivity.context, 0, contentIntent, PendingIntent.FLAG_MUTABLE);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.context, CHANNEL_ID)
                     .setContentTitle(songs.get(position).getDisplayname())
                     .setContentText(songs.get(position).getAutor())
@@ -298,12 +298,12 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
 
             Intent playIntent = new Intent(MainActivity.context, MusicService.class);
             playIntent.setAction("play");
-            PendingIntent playPendingIntent = PendingIntent.getService(MainActivity.context, 0, playIntent, 0);
+            PendingIntent playPendingIntent = PendingIntent.getService(MainActivity.context, 0, playIntent,  PendingIntent.FLAG_MUTABLE);
             builder.addAction(R.drawable.play, "Play", playPendingIntent);
 
             Intent pauseIntent = new Intent(MainActivity.context, MusicService.class);
             pauseIntent.setAction("pause");
-            PendingIntent pausePendingIntent = PendingIntent.getService(MainActivity.context, 0, pauseIntent, 0);
+            PendingIntent pausePendingIntent = PendingIntent.getService(MainActivity.context, 0, pauseIntent,  PendingIntent.FLAG_MUTABLE);
             builder.addAction(R.drawable.pause, "Pause", pausePendingIntent);
 
             notificationManager.notify(notificationId, builder.build());
@@ -311,7 +311,7 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         else{
             Bitmap image = getImage(radio.get(position).getImage());
             Intent contentIntent = new Intent(MainActivity.context, music_player.class);
-            PendingIntent contentPendingIntent = PendingIntent.getActivity(MainActivity.context, 0, contentIntent, 0);
+            PendingIntent contentPendingIntent = PendingIntent.getActivity(MainActivity.context, 0, contentIntent,  PendingIntent.FLAG_MUTABLE);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.context, CHANNEL_ID)
                     .setContentTitle(radio.get(position).getDisplayname())
                     .setContentText(radio.get(position).getAutor())
@@ -326,12 +326,12 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
 
             Intent playIntent = new Intent(MainActivity.context, MusicService.class);
             playIntent.setAction("play");
-            PendingIntent playPendingIntent = PendingIntent.getService(MainActivity.context, 0, playIntent, 0);
+            PendingIntent playPendingIntent = PendingIntent.getService(MainActivity.context, 0, playIntent,  PendingIntent.FLAG_MUTABLE);
             builder.addAction(R.drawable.play, "Play", playPendingIntent);
 
             Intent pauseIntent = new Intent(MainActivity.context, MusicService.class);
             pauseIntent.setAction("pause");
-            PendingIntent pausePendingIntent = PendingIntent.getService(MainActivity.context, 0, pauseIntent, 0);
+            PendingIntent pausePendingIntent = PendingIntent.getService(MainActivity.context, 0, pauseIntent,  PendingIntent.FLAG_MUTABLE);
             builder.addAction(R.drawable.pause, "Pause", pausePendingIntent);
 
             notificationManager.notify(notificationId, builder.build());
