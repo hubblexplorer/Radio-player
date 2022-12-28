@@ -1,4 +1,4 @@
-package com.example.radio_player.Player;
+package com.example.radio_player;
 
 public class AudioData {
     private String type;
@@ -15,6 +15,15 @@ public class AudioData {
         this.image = image;
         this.autor = autor;
         this.duration = duration;
+    }
+
+    public AudioData(String type, String displayname, String data, byte[] image) {
+        this.type = type;
+        this.displayname = displayname;
+        this.data = data;
+        this.image = image;
+        this.autor = null;
+        this.duration = -1;
     }
 
     public String getType() {

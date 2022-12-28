@@ -2,15 +2,17 @@ package com.example.radio_player;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.app.ActivityManager;
+import static com.example.radio_player.MainActivity.mediaPlayer;
+import static com.example.radio_player.MainActivity.position;
+import static com.example.radio_player.MainActivity.type;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,11 +20,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.radio_player.Player.ActionPlaying;
-import com.example.radio_player.Player.AudioData;
-import com.example.radio_player.Player.MusicService;
-import com.example.radio_player.Player.OnItemClickListener;
-import com.example.radio_player.Player.music_player;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -41,6 +38,7 @@ public class fragment1 extends Fragment  implements View.OnClickListener {
     }
     RecyclerView musiclist;
     Boolean isRunning = false;
+    SharedPreferences.Editor editor;
     @Override
     //Este framento contem um temporizador
     public void onStart(){
@@ -48,12 +46,8 @@ public class fragment1 extends Fragment  implements View.OnClickListener {
         View view = getView();
         FloatingActionButton f = view.findViewById(R.id.fab_add);
         f.setVisibility(View.INVISIBLE);
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("shared_prefs", MODE_PRIVATE);
-        String json = sharedPreferences.getString("audio_list", null);
 
-        Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<AudioData>>() {}.getType();
-        ArrayList<AudioData> audioList = gson.fromJson(json, type);
+        ArrayList<AudioData> audioList = MainActivity.songs;
         ArrayList<String> titulos = new ArrayList<>();
         ArrayList<byte[]> imgs = new ArrayList<>();
         ArrayList<Integer> position = new ArrayList<>();
@@ -71,26 +65,26 @@ public class fragment1 extends Fragment  implements View.OnClickListener {
             @Override
             public void onItemClick(int position) {
                 Uteis.MSG_Debug(String.valueOf(position));
-
-
-
-                if (!isRunning){
-                    isRunning = true;
-                    Intent intent = new Intent(view.getContext(), music_player.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                    intent.putExtra("Type","Music");
-                    intent.putExtra("Position",position);
-                    startActivity(intent);
+                MainActivity.position = position;
+                type = "Music";
+                if (mediaPlayer.isPlaying())
+                    mediaPlayer.stop();
+                MainActivity.time = 0;
+                MainActivity.mediaPlayer.release();
+                MainActivity.mediaPlayer = new MediaPlayer();
+                try {
+                    MainActivity.mediaPlayer.setDataSource(MainActivity.songs.get(position).getData());
+                    MainActivity.mediaPlayer.prepare();
+                    MainActivity.isSet = true;
                 }
-                else {
-                            Intent intent = new Intent("Change_position");
-                            intent.putExtra("Position", position);
-                            LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
-
-                    }
+                catch (Exception e){
+                    e.printStackTrace();
                 }
+                Intent intent = new Intent(view.getContext(), music_player.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
 
-            }
+            }}
         );
         musiclist = view.findViewById(R.id.music_list);
         musiclist.setAdapter(adapter_fragment1);

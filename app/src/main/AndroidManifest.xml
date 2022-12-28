@@ -18,7 +18,7 @@
         android:theme="@style/Theme.Radio_player"
         tools:targetApi="31">
         <activity
-            android:name=".Player.music_player"
+            android:name=".music_player"
             android:launchMode="singleTop"
 
             android:exported="false">
@@ -42,7 +42,7 @@
 
 
         <service
-            android:name=".Player.MusicService"
+            android:name=".MusicService"
             android:enabled="true" />
 
         <receiver

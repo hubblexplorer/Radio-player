@@ -98,4 +98,18 @@ public class DatabaseAccess {
 
         return list;
     }
+    public ArrayList<String> getRadiosUrl() {
+        ArrayList<String> list = new ArrayList<>();
+        Cursor cursor = database.rawQuery("SELECT * FROM Radio",null);
+        if (cursor.moveToFirst()) {
+            list.add(cursor.getString(2));
+            while (cursor.moveToNext()) {
+                list.add(cursor.getString(2));
+            }
+        }
+
+        cursor.close();
+
+        return list;
+    }
 }

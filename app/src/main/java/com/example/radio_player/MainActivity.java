@@ -3,15 +3,21 @@ package com.example.radio_player;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
-import com.example.radio_player.Player.AudioData;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.media.session.MediaSessionCompat;
 
 
-import com.example.radio_player.Player.AudioData;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -23,6 +29,19 @@ import wseemann.media.FFmpegMediaMetadataRetriever;
 public class MainActivity extends AppCompatActivity {
     private TabLayout bottomAppBar;
     private ViewPager2 viewPager2;
+    public static MusicService serviceConnection;
+    public static Context context;
+    public static ArrayList<AudioData> songs;
+    public static MediaSessionCompat mediaSession;
+    public static MediaPlayer mediaPlayer;
+    public static int position;
+    public static String type;
+    public static boolean isSet = false;
+    public static int time = 0;
+    public static NotificationChannel channel;
+    public static NotificationManager notificationManager;
+    public static String CHANNEL_ID = "CHANNEL_1";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +58,23 @@ public class MainActivity extends AppCompatActivity {
         viewPager2.setAdapter(adapter);
 
         new MyTask().execute();
+        serviceConnection= new MusicService();
+        Intent serviceIntent = new Intent(this, MainActivity.class);
+        startService(serviceIntent);
+        context = getApplicationContext();
+        mediaSession = new MediaSessionCompat(this, "MusicService");
+        mediaSession.setFlags(
+                MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |
+                        MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
+        );
+        mediaPlayer = new MediaPlayer();
+        position = 0;
+        type = "Music";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "My Channel", NotificationManager.IMPORTANCE_LOW);
+            notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
 
 
 
@@ -79,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         protected Void doInBackground(Void... arg0) {
 
 
-            ArrayList<AudioData> musics = new ArrayList<>();
+            songs = new ArrayList<>();
             FFmpegMediaMetadataRetriever retriever = new FFmpegMediaMetadataRetriever();
             String[][] music = Uteis.getMusicList(MainActivity.this,getContentResolver());
             for (int i = 0; i < music.length; i++){
@@ -87,17 +123,10 @@ public class MainActivity extends AppCompatActivity {
                 retriever.setDataSource(music[i][3]);
 
                 AudioData audio = new AudioData("Music",music[i][4],music[i][3],retriever.getEmbeddedPicture(),music[i][1],Integer.parseInt(music[i][5]));
-                musics.add(audio);
+                songs.add(audio);
             }
 
 
-            SharedPreferences sharedPreferences = getSharedPreferences("shared_prefs", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-
-            Gson gson = new Gson();
-            String json = gson.toJson(musics);
-            editor.putString("audio_list", json);
-            editor.apply();
             return null;
         }
 
@@ -108,4 +137,5 @@ public class MainActivity extends AppCompatActivity {
             Asycdialog.dismiss();
         }
     }
+
 }

@@ -12,16 +12,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class Adapter_fragment3 extends RecyclerView.Adapter<Adapter_fragment3.ViewHolder> {
+public class Adapter_fragment3 extends RecyclerView.Adapter<Adapter_fragment3.ViewHolder> implements OnItemClickListener {
 
     private ArrayList<String> nomes;
     private ArrayList<byte[]> imgs;
+
+    private OnItemClickListener listener;
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+    @Override
+    public void onItemClick(int position) {
+        if (listener != null) {
+            listener.onItemClick(position);
+        }
+    }
 
     /**
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder)
      */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
         private final ImageView imageView;
 
@@ -31,6 +42,15 @@ public class Adapter_fragment3 extends RecyclerView.Adapter<Adapter_fragment3.Vi
 
             textView = (TextView) view.findViewById(R.id.radio_name);
             imageView = view.findViewById(R.id.radio_img);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(position);
+                    }
+                }
+            });
 
 
         }
