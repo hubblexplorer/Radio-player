@@ -36,10 +36,11 @@ import java.util.ArrayList;
 
 
 
-public class music_player  extends AppCompatActivity implements ActionPlaying, View.OnClickListener, MediaPlayer.OnCompletionListener{
+public class music_player  extends AppCompatActivity implements ActionPlaying, View.OnClickListener{
     private ImageView next,prev,play, img_music;
-    private TextView title, timetoend;
+    private TextView title, timetoend,music_size;
     Handler  handler;
+    Runnable updateTimeRunnable;
 
 
     @Override
@@ -52,6 +53,7 @@ public class music_player  extends AppCompatActivity implements ActionPlaying, V
         title = findViewById(R.id.tv_musicname);
         timetoend = findViewById(R.id.tv_time);
         img_music = findViewById(R.id.img_music);
+        music_size = findViewById(R.id.tv_size);
 
         if ( type.equals("Music")) {
             next.setVisibility(View.VISIBLE);
@@ -67,7 +69,32 @@ public class music_player  extends AppCompatActivity implements ActionPlaying, V
             prev.setOnClickListener(this);
             play.setOnClickListener(this);
             title.setText(songs.get(position).getDisplayname());
+            int duration = songs.get(position).getDuration();
+            int minutes = duration / 1000 / 60;
+            int seconds = (duration / 1000) % 60;
+            timetoend.setText("0:00");
+            String time = String.format("%d:%02d", minutes, seconds);
+            music_size.setText(time);
             newhandler();
+            BroadcastReceiver mediaFinishedReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    handler.removeCallbacks(updateTimeRunnable);
+                    if (!MainActivity.mediaPlayer.isLooping()) {
+                        nextClicked();
+                    }
+                    newhandler();
+                    img_music.setImageBitmap(getImage(songs.get(position).getImage()));
+                    int duration = songs.get(position).getDuration();
+                    int minutes = duration / 1000 / 60;
+                    int seconds = (duration / 1000) % 60;
+                    String time = String.format("%d:%02d", minutes, seconds);
+                    music_size.setText(time);
+
+                }
+            };
+            IntentFilter filter = new IntentFilter(MainActivity.MEDIA_FINISHED_BROADCAST);
+            registerReceiver(mediaFinishedReceiver, filter);
         }
         else {
             next.setVisibility(View.INVISIBLE);
@@ -84,7 +111,7 @@ public class music_player  extends AppCompatActivity implements ActionPlaying, V
     }
     private void newhandler() {
 
-         Runnable updateTimeRunnable = new Runnable() {
+        updateTimeRunnable = new Runnable() {
             @Override
             public void run() {
                 // Update the TextView with the current time of the song
@@ -108,12 +135,6 @@ public class music_player  extends AppCompatActivity implements ActionPlaying, V
                 handler.post(updateTimeRunnable);
             }
         });
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                handler.removeCallbacks(updateTimeRunnable);
-            }
-        });
         mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
             @Override
             public boolean onError(MediaPlayer mp, int what, int extra) {
@@ -127,15 +148,17 @@ public class music_player  extends AppCompatActivity implements ActionPlaying, V
 
     @Override
     public void nextClicked() {
-        position++;
-        if(position > MainActivity.songs.size()-1){
-            position=0;
-        }
+
 
         serviceConnection.skipMusic();
         title.setText(songs.get(position).getDisplayname());
         play.setImageResource(R.drawable.pause);
         img_music.setImageBitmap(getImage(songs.get(position).getImage()));
+        int duration = songs.get(position).getDuration();
+        int minutes = duration / 1000 / 60;
+        int seconds = (duration / 1000) % 60;
+        String time = String.format("%d:%02d", minutes, seconds);
+        music_size.setText(time);
 
 
 
@@ -143,13 +166,15 @@ public class music_player  extends AppCompatActivity implements ActionPlaying, V
 
     @Override
     public void prevClicked() {
-        position--;
-        if(position < 0 ){
-            position=MainActivity.songs.size()-1;
-        }
         serviceConnection.previousMusic();
+        title.setText(songs.get(position).getDisplayname());
         play.setImageResource(R.drawable.pause);
         img_music.setImageBitmap(getImage(songs.get(position).getImage()));
+        int duration = songs.get(position).getDuration();
+        int minutes = duration / 1000 / 60;
+        int seconds = (duration / 1000) % 60;
+        String time = String.format("%d:%02d", minutes, seconds);
+        music_size.setText(time);
 
 
     }
@@ -193,6 +218,11 @@ public class music_player  extends AppCompatActivity implements ActionPlaying, V
             play.setImageResource(R.drawable.pause);
             newhandler();
             img_music.setImageBitmap(getImage(songs.get(position).getImage()));
+            int duration = songs.get(position).getDuration();
+            int minutes = duration / 1000 / 60;
+            int seconds = (duration / 1000) % 60;
+            String time = String.format("%d:%02d", minutes, seconds);
+            music_size.setText(time);
         }
         else{
             MainActivity.position = position;
@@ -200,6 +230,11 @@ public class music_player  extends AppCompatActivity implements ActionPlaying, V
             title.setText(radio.get(position).getDisplayname());
             play.setImageResource(R.drawable.pause);
             img_music.setImageBitmap(getImage(radio.get(position).getImage()));
+            int duration = songs.get(position).getDuration();
+            int minutes = duration / 1000 / 60;
+            int seconds = (duration / 1000) % 60;
+            String time = String.format("%d:%02d", minutes, seconds);
+            music_size.setText(time);
         }
 
         }
@@ -251,13 +286,6 @@ public class music_player  extends AppCompatActivity implements ActionPlaying, V
 
 
 
-    @Override
-    public void onCompletion(MediaPlayer mediaPlayer) {
-        if (!mediaPlayer.isLooping()) {
-            nextClicked();
-        }
-        newhandler();
-        img_music.setImageBitmap(getImage(songs.get(position).getImage()));
-    }
+
 
 }

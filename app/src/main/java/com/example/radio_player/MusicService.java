@@ -14,8 +14,10 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -34,7 +36,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class MusicService extends Service implements MediaPlayer.OnCompletionListener {
+public class MusicService extends Service {
 
 
     private NotificationCompat.Builder notificationBuilder;
@@ -88,12 +90,17 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
 
 
         });
-
-
-
-        mediaPlayer.setOnCompletionListener(this);
-
-
+        BroadcastReceiver mediaFinishedReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Uteis.MSG_Debug("Aquiiiiiiiiiiiiiiiiiiiiii");
+                if (!MainActivity.mediaPlayer.isLooping()) {
+                    skipMusic();
+                }
+            }
+        };
+        IntentFilter filter = new IntentFilter(MainActivity.MEDIA_FINISHED_BROADCAST);
+        registerReceiver(mediaFinishedReceiver, filter);
     }
 
     @Override
@@ -121,10 +128,7 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     public void startMusic() {
 
         if (type == "Music") {
-            mediaPlayer.release();
-            mediaPlayer = null;
-            mediaPlayer = new MediaPlayer();
-            mediaPlayer.setOnCompletionListener(this);
+            mediaPlayer.reset();
             try {
                 mediaPlayer.setDataSource(MainActivity.songs.get(position).getData());
                 mediaPlayer.prepare();
@@ -134,10 +138,7 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
 
             }
         }else{
-            mediaPlayer.release();
-            mediaPlayer = null;
-            mediaPlayer = new MediaPlayer();
-            mediaPlayer.setOnCompletionListener(this);
+            mediaPlayer.reset();
             try {
                 mediaPlayer.setDataSource(radio.get(position).getData());
                 mediaPlayer.prepare();
@@ -160,11 +161,14 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     }
 
     public void skipMusic() {
+        position++;
+        if(position > MainActivity.songs.size()-1){
+            position=0;
+        }
+
         MainActivity.time = 0;
-        mediaPlayer.release();
-        mediaPlayer = null;
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setOnCompletionListener(this);
+        mediaPlayer.reset();
+
 
         try {
             Uteis.MSG_Debug(MainActivity.songs.get(position).getDisplayname());
@@ -179,14 +183,15 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         showNotification();
     }
     public void previousMusic() {
-
+        position--;
+        if(position < 0 ){
+            position=MainActivity.songs.size()-1;
+        }
 
 
         MainActivity.time = 0;
-        mediaPlayer.release();
-        mediaPlayer = null;
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setOnCompletionListener(this);
+        mediaPlayer.reset();
+
 
         try {
             mediaPlayer.setDataSource(MainActivity.songs.get(position).getData());
@@ -214,75 +219,19 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
             bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
         }
         else{
-            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icons8_musical_80);
+            bitmap = BitmapFactory.decodeResource(MainActivity.context.getResources(), R.drawable.icons8_musical_80);
         }
 
         return bitmap;
 
 
     }
-    /*
-    private void buildNotification() {
-
-
-        // Add actions to the notification, if desired
-        Intent playIntent = new Intent(MainActivity.context, music_player.class);
-        playIntent.setAction("play");
-        PendingIntent playPendingIntent = PendingIntent.getService(MainActivity.context, 0, playIntent, 0);
-
-        Intent pauseIntent = new Intent(MainActivity.context, music_player.class);
-        pauseIntent.setAction("pause");
-        PendingIntent pausePendingIntent = PendingIntent.getService(MainActivity.context, 0, pauseIntent, 0);
-
-
-        // Add image to the notification, if desired
-        Bitmap image = getImage(MainActivity.songs.get(position).getImage());
-
-        // Set the notification's content intent to open the app when clicked
-        Intent contentIntent = new Intent(MainActivity.context, music_player.class);
-        PendingIntent contentPendingIntent = PendingIntent.getActivity(MainActivity.context, 0, contentIntent, 0);
-
-        notificationBuilder = new NotificationCompat.Builder(MainActivity.context, "CHANNEL_1")
-                .setSmallIcon(R.drawable.icons8_musical_notes_16)
-                .setContentTitle(MainActivity.songs.get(position).getDisplayname())
-                .setOngoing(true)
-                .setSmallIcon(R.drawable.icons8_musical_notes_16)
-                .setLargeIcon(image)
-                .setContentTitle(MainActivity.songs.get(position).getDisplayname())
-                .setContentText(MainActivity.songs.get(position).getAutor())
-                .addAction(R.drawable.play, "Play", playPendingIntent)
-                .addAction(R.drawable.pause, "Pause", pausePendingIntent)
-                //.addAction(R.drawable.previous, "Previous", prevPendingIntent)
-                //.addAction(R.drawable.next, "Next", nextPendingIntent)
-                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
-                        .setMediaSession(MainActivity.mediaSession.getSessionToken()))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(contentPendingIntent)
-                .setOnlyAlertOnce(true);
-    }
-
-
-    private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "CHANNEL_1";
-            String description = "NotificationChannel";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel("CHANNEL_1", name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }*/
 
 
     private void showNotification() {
         if (type == "Music") {
             Bitmap image = getImage(MainActivity.songs.get(position).getImage());
-            Intent contentIntent = new Intent(MainActivity.context, music_player.class);
+            Intent contentIntent = new Intent(MainActivity.context, MainActivity.class);
             PendingIntent contentPendingIntent = PendingIntent.getActivity(MainActivity.context, 0, contentIntent, PendingIntent.FLAG_MUTABLE);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.context, CHANNEL_ID)
                     .setContentTitle(songs.get(position).getDisplayname())
@@ -310,7 +259,7 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         }
         else{
             Bitmap image = getImage(radio.get(position).getImage());
-            Intent contentIntent = new Intent(MainActivity.context, music_player.class);
+            Intent contentIntent = new Intent(MainActivity.context, MainActivity.class);
             PendingIntent contentPendingIntent = PendingIntent.getActivity(MainActivity.context, 0, contentIntent,  PendingIntent.FLAG_MUTABLE);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.context, CHANNEL_ID)
                     .setContentTitle(radio.get(position).getDisplayname())
@@ -342,12 +291,7 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
 
 
 
-    @Override
-    public void onCompletion(MediaPlayer mediaPlayer) {
-        if (!mediaPlayer.isLooping()) {
-            skipMusic();
-        }
-    }
+
 
 
 }

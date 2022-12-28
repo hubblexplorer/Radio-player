@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import wseemann.media.FFmpegMediaMetadataRetriever;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCompletionListener {
     private TabLayout bottomAppBar;
     private ViewPager2 viewPager2;
     public static MusicService serviceConnection;
@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     public static NotificationChannel channel;
     public static NotificationManager notificationManager;
     public static String CHANNEL_ID = "CHANNEL_1";
+    public static final String MEDIA_FINISHED_BROADCAST = "com.example.app.MEDIA_FINISHED";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,13 +72,21 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayer = new MediaPlayer();
         position = 0;
         type = "Music";
+        mediaPlayer.setOnCompletionListener(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "My Channel", NotificationManager.IMPORTANCE_LOW);
             notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
 
+        MyTask myTask =  new MyTask();
+        myTask.execute();
+        try {
+            myTask.get();
+        }
+        catch (Exception e){
 
+        }
 
 
         new TabLayoutMediator(bottomAppBar, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
@@ -92,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }).attach();
-        Uteis.getMusicList(this,getContentResolver());
+
 
 /*
         Intent intent = new Intent(MainActivity.this, player.class);
@@ -136,6 +146,12 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(result);
             Asycdialog.dismiss();
         }
+    }
+    @Override
+    public void onCompletion(MediaPlayer mediaPlayer) {
+        Uteis.MSG_Debug("ALI");
+        Intent broadcastIntent = new Intent(MEDIA_FINISHED_BROADCAST);
+        sendBroadcast(broadcastIntent);
     }
 
 }

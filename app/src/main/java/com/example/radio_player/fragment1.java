@@ -70,8 +70,7 @@ public class fragment1 extends Fragment  implements View.OnClickListener {
                 if (mediaPlayer.isPlaying())
                     mediaPlayer.stop();
                 MainActivity.time = 0;
-                MainActivity.mediaPlayer.release();
-                MainActivity.mediaPlayer = new MediaPlayer();
+                MainActivity.mediaPlayer.reset();
                 try {
                     MainActivity.mediaPlayer.setDataSource(MainActivity.songs.get(position).getData());
                     MainActivity.mediaPlayer.prepare();
